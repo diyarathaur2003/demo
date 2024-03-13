@@ -4,7 +4,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-     <h3> Jenkins TASK - 6.2C</h3>
+     <h3> Jenkins TASK - 6.2, DIYA RATHAURC</h3>
     </div>
   );
 }
