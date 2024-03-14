@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Code Analysis') {
             steps {
-                echo 'Analysis of the code by tools like '
+                echo 'Analysis of the code...'
             }
         }
       stage('Security Scan') {
