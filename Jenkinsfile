@@ -8,86 +8,65 @@ pipeline {
             steps {
                 git branch: 'main', url: 'https://github.com/diyarathaur2003/demo.git'
                 echo 'Installing dependencies...'
-                echo 'Building the React application.'
+                // Example: npm install for installing dependencies
+             
+                echo 'Building the React application...'
                 
             }
         }
-        stage('Unit Tests and Integration Tests') {
+        stage('Unit Tests') {
             steps {
-                echo 'Running  all unit tests...'
-                echo 'Running the Integration Tests...'
+                echo 'Running unit tests...'
+                // Example run the npm tests for unit tests. 
                 
             }
         }
         stage('Code Analysis') {
             steps {
                 echo 'Analysis of the code...'
+                // Example: Running static code analysis tools like ESLint, SonarQube, etc
             }
         }
-      stage('Security Scan') {
+        stage('Security Scan') {
             steps {
                 echo 'Performing security scan of the overall project for any security risks...'
+                //Example: Running security scanning tools like SonarQube Security Analyzer, etc.
                 
             }
         }
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploying the application to a staging environment... for example using DOCKER'
-            
+                 echo 'Deploying the application to a staging environment... for example using DOCKER'
+                
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                echo 'Running the integration tests on the staging environment...'
-            
+                 echo 'Running the integration tests on the staging environment...'
+                //Example: Using Selenium, Cypress, or other frameworks for automated UI testing on the staging environment
             }
         }
         stage('Deploy to Production') {
             steps {
-                echo 'Final stage of the deployement using various deployement platforms such as Netlify..'
+                echo 'Final stage of the deployement using various deployement platforms'
+                // Example Using Netlify or Render for deployement
+                
             }
         }
     }
     
     post {
         success {
-            
-            script {
-               
-                def powershellCommand = """
-                    \$SMTPServer = "smtp.gmail.com"
-                    \$SMTPFrom = "diyarathaur312@gmail.com"
-                    \$SMTPTo = "diyarathaur312@gmail.com"
-                    \$SMTPSubject = "SUCCESSFULLY COMPLETED "
-                    \$SMTPBody = "PIPELINE EXECUTED SUCCESSFULLY!!"
-                    \$SMTPUsername = "diyarathaur312@gmail.com"
-                    \$SMTPPassword = ""
-    
-                    Send-MailMessage -From \$SMTPFrom -to \$SMTPTo -Subject \$SMTPSubject -Body \$SMTPBody -SmtpServer \$SMTPServer -UseSsl -Port 587 -Credential (New-Object System.Management.Automation.PSCredential \$SMTPUsername, (ConvertTo-SecureString -AsPlainText \$SMTPPassword -Force))
-                """
-                powershell(powershellCommand)
-            }
-            
-            echo 'SUCCESSFULLY COMPLETED!'
+            emailext subject: "Pipeline '${currentBuild.fullDisplayName}' Successful",
+                      body: 'Successfully Implemented. Congratulations!',
+                      to: 'diyarathaur312@gmail.com',
+                      attachLog: true
         }
         failure {
-           
-            script {
-               
-                def powershellCommand = """
-                    \$SMTPServer = "smtp.gmail.com"
-                    \$SMTPFrom = "diyarathaur312@gmail.com"
-                    \$SMTPTo = "diyarathaur312@gmail.com"
-                    \$SMTPSubject = "FAILED, CHECK"
-                    \$SMTPBody = "FAILED TO EXECUTE!!"
-                    \$SMTPUsername = "diyarathaur312@gmail.com"
-                    \$SMTPPassword = ""
-    
-                    Send-MailMessage -From \$SMTPFrom -to \$SMTPTo -Subject \$SMTPSubject -Body \$SMTPBody -SmtpServer \$SMTPServer -UseSsl -Port 587 -Credential (New-Object System.Management.Automation.PSCredential \$SMTPUsername, (ConvertTo-SecureString -AsPlainText \$SMTPPassword -Force))
-                """
-                powershell(powershellCommand)
-            }
-            echo 'FAILED, CHECK.'
+            emailext subject: "Pipeline '${currentBuild.fullDisplayName}' Failed",
+                      body: 'Failed, Please investigate.',
+                      to: 'diyarathaur312@gmail.com',
+                      attachLog: true
         }
     }
 }
